@@ -21,6 +21,24 @@ def text_node_to_html_node(text_node):
             return LeafNode("a", text_node.text, {"href": text_node.url})
         case TextType.Images:
             return LeafNode("img", None, {"src": text_node.url})
+        case _:
+            raise ValueError("wrong type")
+            #return LeafNode(None, text_node.text)
+
+def split_nodes_delimiter(old_nodes, delimiter, text_type):
+    new_nodes = []
+    for i in old_nodes:
+        if i.text_type is not TextType.Normal:
+            new_nodes.append(i)
+        else:
+            temp_iter = i.text.split(delimiter)
+            for j in range(len(temp_iter)-1):
+                if j % 2 != 0:
+                    new_nodes.append(TextNode(temp_iter[j], TextType.Normal))
+                else:
+                    new_nodes.append(TextNode(temp_iter[j], text_type))
+    return new_nodes
+
 
 
 
